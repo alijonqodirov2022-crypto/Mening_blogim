@@ -66,7 +66,7 @@ export default function Portfolio() {
     setStatus('sending');
 
     const botToken = "8578469335:AAGIhKG9I_FoRAw7pRLHkpWmyLmc7-XqLFU"; 
-    const chatId = "7277916371"; 
+    const chatId = "7277916372"; 
 
     const text = `🚀 *YANGI BUYURTMA*\n\n👤 *Ism:* ${name}\n💬 *Xabar:* ${message}\n🌐 *Til:* ${lang.toUpperCase()}`;
 
