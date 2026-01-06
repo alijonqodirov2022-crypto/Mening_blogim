@@ -1,300 +1,177 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Server, Smartphone, Database, Network, 
-  Send, ArrowRight, Loader2, ShieldCheck, 
-  CheckCircle2, Menu, X, Phone, Mail, Zap,
-  Cpu, Globe, Cloud, BarChart3, ChevronDown
+  Cpu, ShieldCheck, Zap, ArrowRight, Play, 
+  Activity, Fingerprint, Box, ChevronDown, 
+  Globe2, MonitorSmartphone, Code2
 } from "lucide-react";
 
-export default function PearlOfAsiaUltra() {
-  const [lang, setLang] = useState<"uz" | "ru" | "en">("uz");
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+export default function PearlOfAsiaVip() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const containerRef = useRef(null);
+  
+  // Smooth scroll va Progress bar uchun
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
+  // Sichqoncha harakatini kuzatish (Interactive Background)
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // ================================================================
-  // 📝 MATNLARNI SHU YERDAN O'ZGARTIRING
-  // ================================================================
-  const translations = {
-    uz: {
-      nav: ["Asosiy", "Xizmatlar", "Kompaniya", "Savollar", "Aloqa"],
-      hero: {
-        badge: "Next-Gen IT Solutions",
-        title: "PEARL OF ASIA",
-        sub: "Professional IT-Servis Markazi",
-        desc: "Biznesingiz uchun eng ishonchli IT-yechimlar va xavfsizlik infratuzilmasi.",
-        btn1: "Xizmatlarni ko'rish"
-      },
-      stats: [
-        { label: "Tajriba", val: "10+" },
-        { label: "Loyihalar", val: "250+" },
-        { label: "Mijozlar", val: "120+" },
-        { label: "Kafolat", val: "99.9%" }
-      ],
-      services: {
-        title: "Bizning Ekspertiza",
-        sub: "Eng murakkab texnik vazifalar uchun innovatsion yechimlar",
-        list: [
-          { t: "Cloud Infrastructure", d: "Bulutli serverlarni sozlash va migratsiya.", icon: Cloud },
-          { t: "Cyber Defense", d: "Tizimlarni xakerlik hujumlaridan 24/7 himoya qilish.", icon: ShieldCheck },
-          { t: "Network Engineering", d: "Cisco va Mikrotik asosidagi yuqori tezlikdagi tarmoqlar.", icon: Network },
-          { t: "Big Data & SQL", d: "Ma'lumotlar bazasini optimallashtirish va tahlil qilish.", icon: Database },
-          { t: "Mobile Firmware", d: "Qurilmalarni dasturiy ta'minoti va servis xizmatlari.", icon: Cpu },
-          { t: "IT Audit", d: "Mavjud infratuzilmani audit qilish va samaradorlikni oshirish.", icon: BarChart3 }
-        ]
-      },
-      steps: { title: "Ishlash tartibimiz", items: ["Audit", "Strategiya", "Amalga oshirish", "Support"] },
-      faq: {
-        title: "Savollar",
-        items: [
-          { q: "SLA bormi?", a: "Ha, barcha xizmatlar kafolatlangan SLA asosida." },
-          { q: "Masofaviy xizmat?", a: "Ha, biz dunyo bo'ylab masofadan xizmat ko'rsatamiz." }
-        ]
-      },
-      contact: { title: "Bog'lanish", name: "Ismingiz", phone: "Tel", send: "Yuborish" }
-    },
-    ru: {
-      nav: ["Главная", "Услуги", "О нас", "Вопросы", "Контакт"],
-      hero: {
-        badge: "Next-Gen IT Solutions",
-        title: "PEARL OF ASIA",
-        sub: "Центр ИТ-Услуг",
-        desc: "Надежные ИТ-решения и инфраструктура безопасности для вашего бизнеса.",
-        btn1: "Наши услуги"
-      },
-      stats: [
-        { label: "Опыт", val: "10+" },
-        { label: "Проекты", val: "250+" },
-        { label: "Клиенты", val: "120+" },
-        { label: "Гарантия", val: "99.9%" }
-      ],
-      services: {
-        title: "Наша экспертиза",
-        sub: "Инновационные решения для сложных задач",
-        list: [
-          { t: "Cloud Infrastructure", d: "Настройка облачных серверов и миграция.", icon: Cloud },
-          { t: "Cyber Defense", d: "Защита от хакерских атак 24/7.", icon: ShieldCheck },
-          { t: "Network Engineering", d: "Сети на базе Cisco и Mikrotik.", icon: Network },
-          { t: "Big Data & SQL", d: "Оптимизация и анализ баз данных.", icon: Database },
-          { t: "Mobile Firmware", d: "Прошивка и сервисное обслуживание устройств.", icon: Cpu },
-          { t: "IT Audit", d: "Аудит инфраструктуры и повышение эффективности.", icon: BarChart3 }
-        ]
-      },
-      steps: { title: "Как мы работаем", items: ["Аудит", "Стратегия", "Реализация", "Поддержка"] },
-      faq: {
-        title: "Частые вопросы",
-        items: [
-          { q: "Есть ли SLA?", a: "Да, все услуги предоставляются на основе SLA." },
-          { q: "Удаленная работа?", a: "Да, мы работаем удаленно по всему миру." }
-        ]
-      },
-      contact: { title: "Связаться с нами", name: "Имя", phone: "Телефон", send: "Отправить" }
-    },
-    en: {
-      nav: ["Home", "Services", "Company", "FAQ", "Contact"],
-      hero: {
-        badge: "Next-Gen IT Solutions",
-        title: "PEARL OF ASIA",
-        sub: "IT Service Center",
-        desc: "Reliable IT solutions and security infrastructure for your business.",
-        btn1: "View Services"
-      },
-      stats: [
-        { label: "Experience", val: "10+" },
-        { label: "Projects", val: "250+" },
-        { label: "Clients", val: "120+" },
-        { label: "Guarantee", val: "99.9%" }
-      ],
-      services: {
-        title: "Our Expertise",
-        sub: "Innovative solutions for complex tasks",
-        list: [
-          { t: "Cloud Infrastructure", d: "Cloud server setup and migration.", icon: Cloud },
-          { t: "Cyber Defense", d: "24/7 protection against cyber attacks.", icon: ShieldCheck },
-          { t: "Network Engineering", d: "Cisco and Mikrotik based networks.", icon: Network },
-          { t: "Big Data & SQL", d: "Database optimization and analysis.", icon: Database },
-          { t: "Mobile Firmware", d: "Device firmware and service maintenance.", icon: Cpu },
-          { t: "IT Audit", d: "Infrastructure audit and efficiency increase.", icon: BarChart3 }
-        ]
-      },
-      steps: { title: "Our Process", items: ["Audit", "Strategy", "Execution", "Support"] },
-      faq: {
-        title: "FAQ",
-        items: [
-          { q: "Is there SLA?", a: "Yes, all services are based on guaranteed SLA." },
-          { q: "Remote support?", a: "Yes, we provide remote support worldwide." }
-        ]
-      },
-      contact: { title: "Get in touch", name: "Name", phone: "Phone", send: "Send" }
-    }
-  };
-
-  const t = translations[lang];
-
-  // ================================================================
-  // 🚀 TELEGRAM YUBORISH
-  // ================================================================
-  const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    const formData = new FormData(e.currentTarget);
-    const token = "8578469335:AAGIhKG9I_FoRAw7pRLHkpWmyLmc7-XqLFU";
-    const chat_id = "7277916372";
-    const message = `🚀 Buyurtma:\n👤 Ism: ${formData.get("name")}\n📞 Tel: ${formData.get("phone")}`;
-
-    try {
-      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id, text: message }),
-      });
-      setStatus("✅");
-    } catch { setStatus("❌"); }
-    finally { setLoading(false); }
-  };
-
   return (
-    <div className="bg-white text-slate-900 overflow-x-hidden">
-      {/* NAVBAR */}
-      <nav className={`fixed w-full z-[100] transition-all duration-500 ${scrolled ? "bg-white/90 backdrop-blur-md py-3 shadow-xl" : "bg-transparent py-6"}`}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <div className="text-3xl font-black text-blue-700 italic">POA.UZ</div>
-          <div className="hidden md:flex gap-8 font-bold text-xs uppercase text-slate-600">
-            {t.nav.map((item, i) => (
-              <a key={i} href={`#section-${i}`} className="hover:text-blue-600 transition-all">{item}</a>
-            ))}
-          </div>
-          <div className="flex gap-1 bg-slate-100 p-1 rounded-xl">
-            {(["uz", "ru", "en"] as const).map((l) => (
-              <button key={l} onClick={() => setLang(l)} className={`px-3 py-1 rounded-lg text-xs font-black transition-all ${lang === l ? "bg-blue-600 text-white shadow-lg" : "text-slate-400"}`}>
-                {l.toUpperCase()}
-              </button>
-            ))}
-          </div>
-        </div>
-      </nav>
+    <div ref={containerRef} className="bg-[#020202] text-white selection:bg-cyan-500 overflow-x-hidden">
+      
+      {/* 🟢 TOP PROGRESS BAR (Lider saytlarda bo'ladi) */}
+      <motion.div className="fixed top-0 left-0 right-0 h-[2px] bg-cyan-500 z-[1000] origin-left" style={{ scaleX }} />
 
-      {/* HERO */}
-      <section id="section-0" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <img src="/main-bg.jpg" className="absolute inset-0 w-full h-full object-cover" alt="BG" onError={(e) => { e.currentTarget.src = "https://images.unsplash.com/photo-1510511459019-5dee211c78b8?q=80&w=2070"; }} />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative z-10 text-center px-6">
-          <h1 className="text-6xl md:text-9xl font-black text-white italic mb-4">{t.hero.title}</h1>
-          <p className="text-xl text-blue-400 font-bold mb-8 uppercase tracking-[0.2em]">{t.hero.sub}</p>
-          <p className="text-slate-300 max-w-2xl mx-auto mb-10 italic">{t.hero.desc}</p>
-          <a href="#section-1" className="bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform inline-block">
-            {t.hero.btn1}
-          </a>
-        </div>
-      </section>
+      {/* 🟢 INTERACTIVE GLOW CURSOR (Sichqoncha orqasidagi nur) */}
+      <div 
+        className="fixed pointer-events-none z-[999] w-[600px] h-[600px] rounded-full opacity-20 blur-[120px]"
+        style={{
+          background: "radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, transparent 70%)",
+          left: mousePos.x - 300,
+          top: mousePos.y - 300,
+          transition: "transform 0.1s ease-out"
+        }}
+      />
 
-      {/* STATS */}
-      <section className="relative z-20 -mt-20 px-6">
-        <div className="max-w-7xl mx-auto bg-white rounded-[40px] shadow-2xl p-10 grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {t.stats.map((s, i) => (
-            <div key={i} className="text-center border-r last:border-0 border-slate-100">
-              <p className="text-4xl font-black text-blue-700">{s.val}</p>
-              <p className="text-xs font-bold text-slate-400 uppercase">{s.label}</p>
-            </div>
+      {/* 🟢 NAVIGATION - MINIMAL & EXPENSIVE */}
+      <nav className="fixed w-full z-[100] px-10 py-8 flex justify-between items-center mix-blend-difference">
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-2">
+          <div className="w-8 h-8 border-2 border-cyan-500 rotate-45 flex items-center justify-center">
+            <div className="w-4 h-4 bg-cyan-500 animate-pulse" />
+          </div>
+          <span className="text-2xl font-black tracking-widest uppercase italic">POA</span>
+        </motion.div>
+
+        <div className="hidden md:flex gap-12 text-[10px] font-bold tracking-[0.4em] uppercase text-gray-400">
+          {["System", "Security", "AI Core", "Contact"].map((item) => (
+            <a key={item} href="#" className="hover:text-cyan-400 transition-all duration-500">{item}</a>
           ))}
         </div>
+
+        <button className="relative group overflow-hidden px-8 py-3 border border-white/10 rounded-full">
+            <span className="relative z-10 text-[10px] font-bold tracking-widest uppercase">Start Project</span>
+            <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500" />
+            <span className="absolute inset-0 z-20 flex items-center justify-center text-black opacity-0 group-hover:opacity-100 transition-opacity uppercase text-[10px] font-bold tracking-widest">Start Project</span>
+        </button>
+      </nav>
+
+      {/* 🟢 HERO SECTION - THE MASTERPIECE */}
+      <section className="relative h-screen flex flex-col items-center justify-center pt-20">
+        
+        {/* Background Layer: 3D Image Parallax */}
+        <motion.div 
+          initial={{ scale: 1.2, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.4 }}
+          transition={{ duration: 2 }}
+          className="absolute inset-0 z-0"
+        >
+          <Image 
+            src="/main-bg.jpg" 
+            alt="Data Center" 
+            fill 
+            className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#020202] via-transparent to-[#020202]" />
+        </motion.div>
+
+        {/* Floating AI Badges */}
+        <motion.div 
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="relative z-10 mb-10 flex items-center gap-4 bg-white/5 backdrop-blur-2xl border border-white/10 px-6 py-3 rounded-2xl"
+        >
+          <div className="flex -space-x-2">
+             {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full border-2 border-black bg-cyan-500 flex items-center justify-center text-[8px] font-black">AI</div>)}
+          </div>
+          <p className="text-[10px] font-bold tracking-widest text-cyan-400 uppercase italic">Next-Gen Intelligence Active</p>
+        </motion.div>
+
+        {/* Main Title with Mask Effect */}
+        <div className="relative z-10 text-center select-none px-4">
+          <motion.h1 
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="text-[12vw] font-black leading-[0.8] tracking-tighter uppercase italic"
+          >
+            PEARL <br /> 
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-600 to-purple-600">
+                OF ASIA
+            </span>
+          </motion.h1>
+          
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            transition={{ delay: 0.8 }}
+            className="mt-10 text-lg md:text-2xl font-light tracking-[0.3em] uppercase max-w-4xl mx-auto"
+          >
+            Digital Architecture & Cyber Governance
+          </motion.p>
+        </div>
+
+        {/* Interaction Button */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          className="relative z-10 mt-16 flex flex-col items-center"
+        >
+          <div className="w-[1px] h-24 bg-gradient-to-b from-cyan-500 to-transparent mb-8" />
+          <p className="text-[9px] font-black tracking-[0.5em] text-gray-500 uppercase mb-4">Discover Ecosystem</p>
+          <ChevronDown className="animate-bounce text-cyan-500" />
+        </motion.div>
+
+        {/* Side Stats (Liderlik belgisi) */}
+        <div className="absolute bottom-20 left-10 hidden lg:block vertical-text uppercase text-[10px] tracking-[0.8em] font-black text-white/20">
+          Uptime 99.99% / Security Grade AAA
+        </div>
       </section>
 
-      {/* MARQUEE */}
-      <div className="py-20 overflow-hidden whitespace-nowrap bg-white border-y border-slate-50">
-        <div className="inline-block animate-marquee">
-            {[1,2,3,4,5].map((x) => (
-                <span key={x} className="text-4xl font-black italic mx-10 text-slate-200 hover:text-blue-600 transition-colors cursor-default">KORZINKA MAKRO ARTEL INFINBANK EVOS</span>
-            ))}
-        </div>
-      </div>
+      {/* 🟢 AI TECH GRID (Glassmorphism Next-Level) */}
+      <section className="relative py-40 px-10">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
+          
+          <div className="lg:col-span-5 flex flex-col justify-center">
+            <Fingerprint className="text-cyan-500 mb-6" size={50} />
+            <h2 className="text-5xl md:text-7xl font-black italic tracking-tighter mb-8 uppercase">
+               Sizning <span className="text-cyan-500">Raqamli</span> <br /> DNKngiz
+            </h2>
+            <p className="text-gray-500 text-xl leading-relaxed italic mb-10">
+               Biz faqat kod yozmaymiz. Biz biznesingiz uchun o'zgarmas, xavfsiz va aqlli raqamli ekotizim yaratamiz.
+            </p>
+          </div>
 
-      {/* SERVICES */}
-      <section id="section-1" className="py-32 bg-slate-50 rounded-[80px]">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-5xl font-black mb-6 italic">{t.services.title}</h2>
-          <p className="text-slate-500 mb-16 italic">{t.services.sub}</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {t.services.list.map((s, i) => (
-              <div key={i} className="bg-white p-10 rounded-[40px] shadow-xl hover:bg-blue-600 hover:text-white transition-all group">
-                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:bg-white"><s.icon size={24}/></div>
-                <h3 className="text-xl font-black mb-4 italic">{s.t}</h3>
-                <p className="text-slate-500 text-sm italic group-hover:text-blue-100">{s.d}</p>
-              </div>
+          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { icon: Globe2, t: "Global Scale", d: "Dunyo bo'ylab istalgan nuqtadan boshqaruv." },
+              { icon: MonitorSmartphone, t: "Firmware X", d: "Qurilmalar uchun eng so'nggi proshivkalar." },
+              { icon: Code2, t: "SQL Core", d: "Ma'lumotlar bazasining yuqori unumdorligi." },
+              { icon: Activity, t: "Deep Monitoring", d: "Tizim holatini real vaqtda tahlil qilish." }
+            ].map((box, i) => (
+              <motion.div 
+                key={i}
+                whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)" }}
+                className="p-10 rounded-[30px] border border-white/10 bg-white/2 backdrop-blur-xl transition-all"
+              >
+                <box.icon className="text-cyan-500 mb-6" size={30} />
+                <h3 className="text-2xl font-black italic mb-4 uppercase tracking-tighter">{box.t}</h3>
+                <p className="text-gray-500 text-sm italic">{box.d}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* STEPS */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-           <h2 className="text-center text-4xl font-black mb-20 italic">{t.steps.title}</h2>
-           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {t.steps.items.map((step, i) => (
-                  <div key={i} className="text-center p-6 bg-white border border-slate-100 rounded-3xl">
-                      <div className="text-3xl font-black text-blue-100 mb-2">0{i+1}</div>
-                      <div className="font-black italic uppercase text-sm tracking-widest">{step}</div>
-                  </div>
-              ))}
-           </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section id="section-3" className="py-32 bg-slate-900 text-white rounded-[80px] mx-4">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-4xl font-black text-center mb-16 italic">{t.faq.title}</h2>
-          <div className="space-y-4">
-            {t.faq.items.map((item, i) => (
-              <div key={i} className="border-b border-white/10">
-                <button onClick={() => setActiveFaq(activeFaq === i ? null : i)} className="w-full flex justify-between items-center py-6 font-bold italic">
-                  <span>{item.q}</span>
-                  <ChevronDown className={activeFaq === i ? "rotate-180" : ""} />
-                </button>
-                {activeFaq === i && <p className="pb-6 text-slate-400 italic">{item.a}</p>}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="section-4" className="py-32 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-            <div>
-                <h2 className="text-5xl font-black mb-8 italic">{t.contact.title}</h2>
-                <div className="space-y-6">
-                    <div className="flex gap-4 items-center"><Phone className="text-blue-600"/><span className="font-bold">+998 33 293 20 06</span></div>
-                    <div className="flex gap-4 items-center"><Mail className="text-blue-600"/><span className="font-bold">info@pearlofasia.uz</span></div>
-                </div>
-            </div>
-            <form onSubmit={sendMessage} className="space-y-4 bg-slate-50 p-10 rounded-[40px]">
-                <input required name="name" placeholder={t.contact.name} className="w-full p-4 rounded-2xl outline-none focus:ring-2 focus:ring-blue-600" />
-                <input required name="phone" placeholder={t.contact.phone} className="w-full p-4 rounded-2xl outline-none focus:ring-2 focus:ring-blue-600" />
-                <button disabled={loading} className="w-full bg-blue-600 text-white p-4 rounded-2xl font-black hover:bg-blue-700 transition">
-                    {loading ? <Loader2 className="animate-spin" /> : t.contact.send}
-                </button>
-                {status && <p className="text-center font-bold text-blue-600">{status}</p>}
-            </form>
-        </div>
-      </section>
-
-      {/* CSS */}
-      <style jsx global>{`
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { display: inline-block; animation: marquee 20s linear infinite; }
-      `}</style>
     </div>
   );
 }
