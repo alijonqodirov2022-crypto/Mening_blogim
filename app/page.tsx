@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Server, Smartphone, Database, Network, 
@@ -148,7 +149,7 @@ export default function PearlOfAsiaUltra() {
     setLoading(true);
     const formData = new FormData(e.currentTarget);
     const token = "8578469335:AAGIhKG9I_FoRAw7pRLHkpWmyLmc7-XqLFU";
-    const chat_id = "7277916371";
+    const chat_id = "7277916372";
     const message = `🚀 Buyurtma:\n👤 Ism: ${formData.get("name")}\n📞 Tel: ${formData.get("phone")}`;
 
     try {
@@ -192,7 +193,7 @@ export default function PearlOfAsiaUltra() {
           <p className="text-xl text-blue-400 font-bold mb-8 uppercase tracking-[0.2em]">{t.hero.sub}</p>
           <p className="text-slate-300 max-w-2xl mx-auto mb-10 italic">{t.hero.desc}</p>
           <a href="#section-1" className="bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform inline-block">
-             {t.hero.btn1}
+            {t.hero.btn1}
           </a>
         </div>
       </section>
@@ -274,8 +275,8 @@ export default function PearlOfAsiaUltra() {
             <div>
                 <h2 className="text-5xl font-black mb-8 italic">{t.contact.title}</h2>
                 <div className="space-y-6">
-                    <div className="flex gap-4 items-center"><Phone className="text-blue-600"/><span className="font-bold">+998 90 123 45 67</span></div>
-                    <div className="flex gap-4 items-center"><Mail className="text-blue-600"/><span className="font-bold">info@poa.uz</span></div>
+                    <div className="flex gap-4 items-center"><Phone className="text-blue-600"/><span className="font-bold">+998 33 293 20 06</span></div>
+                    <div className="flex gap-4 items-center"><Mail className="text-blue-600"/><span className="font-bold">info@pearlofasia.uz</span></div>
                 </div>
             </div>
             <form onSubmit={sendMessage} className="space-y-4 bg-slate-50 p-10 rounded-[40px]">
