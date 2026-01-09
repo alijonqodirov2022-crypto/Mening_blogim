@@ -3,12 +3,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Pearl of Asia | Professional IT-Servis Markazi",
+    default: "Pearl of Asia | Customs Clearance Services",
     template: "%s | Pearl of Asia"
   },
-  description: "Pearl of Asia (Alidov Dev) - Professional IT xizmatlari: Telefon proshivka, blokdan ochish, SQL bazalar, server va tarmoq sozlash. 10 yillik tajriba.",
-  keywords: ["Pearl of Asia", "Alidov Dev", "telefon proshivka", "icloud ochish", "SQL database Uzbekistan", "tarmoq qurish", "IT autsorsing"],
-  authors: [{ name: "Alidov Dev" }],
+  description: "Pearl of Asia (AlIJON QODIROV) - Professional Customs Broker: Ваш надежный брокер, Таможенное оформление грузов, Expert in Declaration. 10 yillik tajriba.",
+  keywords: ["Pearl of Asia", "Alijon Qodirov", "IMPORT", "EXPORT", "`Bojxona rasmiylashtiruvi xizmati", "Yuklarni ishonchli deklaratsiyalash", "Expert in Declaration"],
+  authors: [{ name: "Alijon Qodirov" }],
   creator: "Pearl of Asia Team",
   metadataBase: new URL('https://pearlofasia.uz'),
   alternates: {
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Pearl of Asia | Professional IT xizmatlar",
-    description: "Texnik muhandislik va biznes uchun IT yechimlar. Telefon ochishdan tortib murakkab serverlargacha.",
+    title: "Pearl of Asia | Customs Clearance Services",
+    description: "Pearl of Asia | Bojxona Rasmiylashtiruvi ✅ Barcha turdagi yuklarni deklaratsiyalash ✅ Eksport va Import operatsiyalari ✅ Qisqa muddatlarda hujjatlarni tayyorlash ✅ Professional bojxona maslahatlari 🌐 Biz bilan yukingiz chegarada to'xtab qolmaydi!",
     url: 'https://pearlofasia.uz',
     siteName: 'Pearl of Asia',
     images: [
